@@ -1,19 +1,31 @@
 def componentized(cls):
     class WrappedClass:
         def __init__(self, *args):
-            self.wrapped_instance = cls(*args)
-            self.components = []
+            self.__dict__['wrapped_instance'] = cls(*args)
+            self.__dict__['components'] = []
             for i in cls.__dict__:
                 if type(cls.__dict__[i]) == Component:
                     self.components.append(i)
 
         def __getattr__(self, name):
-            attr_list = self.__checkattr(name)
+            attr_list = self.checkattrs(name)
             if len(attr_list) == 1:
                 return getattr(self.wrapped_instance, name)
             return tuple(getattr(self.wrapped_instance, attr) for attr in attr_list)
 
-        def __checkattr(self, name):
+        def __setattr__(self, name, value):
+            attr_list = self.checkattrs(name)
+            if isinstance(value, tuple):
+                for attr, val in zip(attr_list, value):
+                    setattr(self.wrapped_instance, attr, val)
+            else:
+                if len(attr_list) > 1:
+                    for attr in attr_list:
+                        setattr(self.wrapped_instance, attr, value)
+                else:
+                    setattr(self.wrapped_instance, name, value)
+
+        def checkattrs(self, name):
             ret = []
             for comp in self.components:
                 if comp in name and not(comp in ret):
@@ -36,20 +48,3 @@ class Component:
             raise AttributeError("Type \"{}\" do not match \"{}\".".format(type(value), self.type))
         else:
             self.value = value
-
-
-@componentized
-class Color:
-    r = Component(int)
-    g = Component(int)
-    b = Component(int)
-
-    def __init__(self, r, g, b):
-        self.r = r
-        self.g = g
-        self.b = b
-
-
-c = Color(255, 200, 160)
-print("\"{}\" \"{}\" \"{}\"".format(c.r, c.g, c.b))
-print(c.rb)
