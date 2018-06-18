@@ -1,6 +1,9 @@
 from componentized import componentized
 from componentized import Component
 
+from currying import currying
+
+
 @componentized
 class Color:
     a = Component(int)
@@ -15,9 +18,17 @@ class Color:
         self.b = b
 
 
+@currying
+def add(p, q, r, s):
+    return p + q + r + s
+
 c = Color(23, 255, 200, 160)
 print("\"{}\" \"{}\" \"{}\" \"{}\"".format(c.a, c.r, c.g, c.b))
 c.argb = 255
 print(c.argb)
 c.argb = (0, 0, 0, 0)
 print(c.argb)
+
+print("\n==========================\n")
+
+print(add(1, 2, 3))
