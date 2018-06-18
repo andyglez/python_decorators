@@ -35,3 +35,26 @@ add(1,2)(3,4)       # 10
 add(10)(20)(30)(40) # 100
 ~~~
 
+## Managed Attributes ##
+
+It is one of the fundamentals of Python's core, the attribute interception is the main point of decision in the behavior
+of an instance of a class. In most cases, an object's attributes lives within its definition or it is inherited from a
+parent class, but, sometimes, more flexibility is required so the object will mutate and the class must be prepared for
+the change.
+
+**Property**
+
+This protocol allows to route a specific attribute's get and set or intercept attribute access, intercept delete operations
+and provide documentation. A property manages a single specific attribute, that is it can't catch all attribute accesses.
+
+~~~py
+attribute = property(fget, fset, fdel, doc)
+~~~
+
+With the use of python decorators is now possible to declare a function decorated as a property which will make it behave
+exactly as a property and also the accessors can be decorated to work for that specific property.
+
+~~~py
+class Person:
+    def __init
+~~~
