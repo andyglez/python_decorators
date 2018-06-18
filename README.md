@@ -106,5 +106,36 @@ An instance state records information related to and possibly created by the cli
 It is part of Python's general overloading protocol, that is, unlike properties and descriptors. They are also broader because
 their are the core of attribute access which allows it to have a delegation-based coding patterns.
 
-Because of they are also part of the class' definition they are also involved with inheritance, so it is a potential recursive
-call between itself and a parent definition, 
+They are part of the class' definition and because of that they are also involved with inheritance, so it is a potential
+recursive call between itself and a parent definition, but the stronger case is when __setattr__ is also defined and a
+trick must be made to avoid such recursion problems: whenever setting an attribute is better to do it through the object's
+field dictionary to avoid direct attribute assignment.
+
+~~~py
+class Component:                    # Example of a descriptor
+    def __init__(self, t): ...              # Describes an object and its type
+
+    def __get__(self, instance, owner): ... # getter access control
+
+    def __set__(self, instance, value): ... # setter access control
+        # After type checking assign its value
+~~~
+
+~~~py
+def componentized(cls):                 # Structure of a class decorator
+    class WrappedClass:
+        def __init__(self, *args):
+            # Trick to avoid recursion within __getattr__
+            self.__dict__['wrapped_instance'] = cls(*args)
+            self.__dict__['components'] = []
+            # ... Assign described class components to list of components
+
+        def __getattr__(self, name): ...        # Attribute getter control
+
+        def __setattr__(self, name, value): ... # Attribute setter control
+
+    return WrappedClass
+~~~
+
+Now, componentized can be used as a decorator, which is a class containing a decorated class that controls access (get or set)
+to its members, specialized with component members to describe their access further more.
