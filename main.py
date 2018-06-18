@@ -29,6 +29,6 @@ print(c.argb)
 c.argb = (0, 0, 0, 0)
 print(c.argb)
 
-print("\n==========================\n")
+print("=" * 20)
 
 print(add(1)(2, 3, 4))

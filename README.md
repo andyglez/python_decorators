@@ -72,3 +72,39 @@ class Person:
         del self._name
 
 ~~~
+
+**Descriptors**
+
+They provide an alternative way to intercept attribute access. Functionally speaking it allows us to route a specific
+attribute access operation to methods of a separate class' instance object, previously specified. Descriptors are created
+as independent classes and are assigned to class attributes just like method functions.
+
+Unlike properties, descriptors are broader in scope, and provide a more general tool. For instance, because they are coded
+as normal classes, descriptors have their own state, may participate in descriptor inheritance and hierarchies, can use
+composition to aggregate objects, and provide a natural structure for coding internal methods and attribute documentation
+strings.
+
+~~~py
+class Descriptor:
+    "Doc string for descriptor"                  # documentation string
+    def __get__(self, instance, owner): ...     # getter: returns attr value
+    def __set__(self, instance, value): ...     # setter: returns None (Nothing)
+    def __delete__(self, instance): ...          # delete: returns None (Nothing)
+~~~
+
+Their definitions are the ones to decide its characteristics, that is, if descriptor only has a definition of a getter
+then it is read-only, if only a setter it is write-only. But it is still not enough since a parent class can hide its
+property.
+
+A descriptor state is used to manage either data internal to the workings of the descriptor, or data that spans all instances.
+It can vary per attribute appearance.
+
+An instance state records information related to and possibly created by the client class. It can vary per client class instance.
+
+**__getattr__**
+
+It is part of Python's general overloading protocol, that is, unlike properties and descriptors. They are also broader because
+their are the core of attribute access which allows it to have a delegation-based coding patterns.
+
+Because of they are also part of the class' definition they are also involved with inheritance, so it is a potential recursive
+call between itself and a parent definition, 
