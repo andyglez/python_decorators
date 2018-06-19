@@ -6,6 +6,8 @@ from currying import currying
 from TypeCheck import TypeCheck
 from TypeCheck import typecheck
 import Singleton
+from Matrix import Matrix
+
 
 @componentized
 class Color:
@@ -79,3 +81,16 @@ print(singleton)
 other_child = Singleton.Single()
 print(other_child)
 print(child == other_child)
+
+matrix = Matrix([[1, 2], [3, 4]])
+
+for i in matrix:
+    print(i)
+
+print(matrix[0, 0])
+matrix[0, 0] = 5
+print(matrix[0, 0])
+matrix[0, 0] = 1
+
+for i in matrix * 2:
+    print(i)
