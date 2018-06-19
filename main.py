@@ -35,6 +35,24 @@ def concat(x, y):
 def my_concat(x, y):
     return x + y
 
+
+class Memoize:
+    def __init__(self, func):
+        self.func = func
+        self.memory = {}
+
+    def __call__(self, *args):
+        if not(args in self.memory):
+            self.memory[args] = self.func(*args)
+        return self.memory[args]
+
+
+@Memoize
+def fib(n):
+    if n <= 2:
+        return 1
+    return fib(n-1) + fib(n-2)
+
 c = Color(23, 255, 200, 160)
 print("\"{}\" \"{}\" \"{}\" \"{}\"".format(c.a, c.r, c.g, c.b))
 c.argb = 255
@@ -47,3 +65,5 @@ print("=" * 20)
 print(add(1)(2, 3, 4))
 print(concat("hello, ", "andy"))
 print(my_concat("hello, ", "andy"))
+
+print(fib(4))
