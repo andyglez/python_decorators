@@ -3,6 +3,9 @@ from componentized import Component
 
 from currying import currying
 
+from TypeCheck import TypeCheck
+from TypeCheck import typecheck
+
 
 @componentized
 class Color:
@@ -22,6 +25,16 @@ class Color:
 def add(p, q, r, s):
     return p + q + r + s
 
+
+@TypeCheck(str, str)
+def concat(x, y):
+    return x + y
+
+
+@typecheck(str, str)
+def my_concat(x, y):
+    return x + y
+
 c = Color(23, 255, 200, 160)
 print("\"{}\" \"{}\" \"{}\" \"{}\"".format(c.a, c.r, c.g, c.b))
 c.argb = 255
@@ -32,3 +45,5 @@ print(c.argb)
 print("=" * 20)
 
 print(add(1)(2, 3, 4))
+print(concat("hello, ", "andy"))
+print(my_concat("hello, ", "andy"))
