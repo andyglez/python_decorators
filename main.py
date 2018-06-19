@@ -5,7 +5,7 @@ from currying import currying
 
 from TypeCheck import TypeCheck
 from TypeCheck import typecheck
-
+import Singleton
 
 @componentized
 class Color:
@@ -67,3 +67,15 @@ print(concat("hello, ", "andy"))
 print(my_concat("hello, ", "andy"))
 
 print(fib(4))
+
+singleton = Singleton.Singleton()
+print(singleton)
+other_try = Singleton.Singleton()
+print(other_try)
+print(singleton == other_try)
+
+child = Singleton.Single()
+print(singleton)
+other_child = Singleton.Single()
+print(other_child)
+print(child == other_child)
