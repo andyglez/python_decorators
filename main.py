@@ -55,6 +55,22 @@ def fib(n):
         return 1
     return fib(n-1) + fib(n-2)
 
+
+def list_concat(x, y):
+    ret = x.copy()
+    for comb in y:
+        ret.append(comb)
+    return ret
+
+
+def combinations(l):
+    for item in l:
+        if len(l) == 1:
+            yield [item]
+        for comb in combinations([other for other in l if other != item]):
+            yield list_concat([item], comb)
+
+
 c = Color(23, 255, 200, 160)
 print("\"{}\" \"{}\" \"{}\" \"{}\"".format(c.a, c.r, c.g, c.b))
 c.argb = 255
@@ -94,3 +110,10 @@ matrix[0, 0] = 1
 
 for i in matrix * 2:
     print(i)
+
+count = 0
+for i in combinations([x for x in range(1, 10)]):
+    print(i)
+    count += 1
+
+print(count)
